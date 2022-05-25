@@ -76,20 +76,18 @@ export class UsersService {
     } catch (err) {
       return {
         ok: false,
-        err,
+        err: "Can't log user in",
       };
     }
   }
 
   async findById(id: number): Promise<UserProfileOutput> {
     try {
-      const user = await this.users.findOne({ id });
-      if (user) {
-        return {
-          ok: true,
-          user,
-        };
-      }
+      const user = await this.users.findOneOrFail({ id });
+      return {
+        ok: true,
+        user,
+      };
     } catch (err) {
       return {
         ok: false,
@@ -141,7 +139,7 @@ export class UsersService {
       }
       return { ok: false, err: 'Verification not found.' };
     } catch (err) {
-      return { ok: false, err };
+      return { ok: false, err: 'Could not verify email' };
     }
   }
 }
