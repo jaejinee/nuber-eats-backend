@@ -5,7 +5,7 @@ import {
   CreateAccountInput,
   CreateAccountOutput,
 } from './dtos/create-account.dto';
-import { LoginInput } from './dtos/login.dto';
+import { LoginInput, LoginOutput } from './dtos/login.dto';
 import { User } from './entities/user.entity';
 import { JwtService } from 'src/jwt/jwt.service';
 import { EditProfileInput, EditProfileOutput } from './dtos/edit-profile.dto';
@@ -49,10 +49,7 @@ export class UsersService {
     }
   }
 
-  async login({
-    email,
-    password,
-  }: LoginInput): Promise<{ ok: boolean; error?: string; token?: string }> {
+  async login({ email, password }: LoginInput): Promise<LoginOutput> {
     try {
       const user = await this.users.findOne(
         { email },
@@ -61,14 +58,14 @@ export class UsersService {
       if (!user) {
         return {
           ok: false,
-          error: 'User not found',
+          err: 'User not found',
         };
       }
       const passwordCorrect = await user.checkPassword(password);
       if (!passwordCorrect) {
         return {
           ok: false,
-          error: 'Wrong password',
+          err: 'Wrong password',
         };
       }
       const token = this.jwtService.sign(user.id);
@@ -76,10 +73,10 @@ export class UsersService {
         ok: true,
         token,
       };
-    } catch (error) {
+    } catch (err) {
       return {
         ok: false,
-        error,
+        err,
       };
     }
   }
@@ -125,7 +122,7 @@ export class UsersService {
     } catch (err) {
       return {
         ok: false,
-        err: 'Could not found update profile.',
+        err: 'Could not update profile.',
       };
     }
   }
