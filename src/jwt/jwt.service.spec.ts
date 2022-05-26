@@ -12,6 +12,7 @@ jest.mock('jsonwebtoken', () => {
     verify: jest.fn(() => ({ id: USER_ID })),
   };
 });
+
 describe('JwtService', () => {
   let service: JwtService;
   beforeEach(async () => {
