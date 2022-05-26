@@ -1,8 +1,5 @@
 import { Test } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { utimes } from 'fs';
-import { number, object } from 'joi';
-import { async } from 'rxjs';
 import { EmailService } from 'src/email/email.service';
 import { JwtService } from 'src/jwt/jwt.service';
 import { Repository } from 'typeorm';
