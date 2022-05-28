@@ -11,10 +11,14 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { User } from './users/entities/user.entity';
+import { Verification } from './users/entities/verification.entity';
+import { Restaurant } from './restaurant/entities/restaurant.entity';
+import { Category } from './restaurant/entities/category.entity';
 import { JwtModule } from './jwt/jwt.module';
 import { JwtMiddleware } from './jwt/jwt.middleware';
-import { Verification } from './users/entities/verification.entity';
 import { EmailModule } from './email/email.module';
+import { RestaurantModule } from './restaurant/restaurant.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -45,7 +49,7 @@ import { EmailModule } from './email/email.module';
       synchronize: process.env.NODE_ENV !== 'prod',
       logging:
         process.env.NODE_ENV !== 'prod' && process.env.NODE_ENV !== 'test',
-      entities: [User, Verification],
+      entities: [User, Verification, Restaurant, Category],
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
@@ -60,7 +64,9 @@ import { EmailModule } from './email/email.module';
       domain: process.env.MAILGUN_DOMAIN_NAME,
       fromEmail: process.env.MAILGUN_FROM_EMAIL,
     }),
+    AuthModule,
     UsersModule,
+    RestaurantModule,
   ],
   controllers: [],
   providers: [],

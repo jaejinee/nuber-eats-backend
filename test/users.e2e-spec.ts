@@ -66,8 +66,15 @@ describe('UserModule (e2e)', () => {
       `)
         .expect(200)
         .expect((res) => {
-          expect(res.body.data.createAccount.ok).toBe(true);
-          expect(res.body.data.createAccount.err).toBe(null);
+          const {
+            body: {
+              data: {
+                createAccount: { ok, err },
+              },
+            },
+          } = res;
+          expect(ok).toBe(true);
+          expect(err).toBe(null);
         });
     });
 
@@ -79,7 +86,7 @@ describe('UserModule (e2e)', () => {
             password:"${testUser.password}"
             role:${testUser.role}
           }){
-            ok,
+            ok
             err
           }
         }`)
